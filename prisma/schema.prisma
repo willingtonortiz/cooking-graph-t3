@@ -6,12 +6,42 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Recipe {
+    id        String   @id @default(uuid()) @map("_id")
+    name      String
+    nodes     Node[]
+    edges     Edge[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Node {
+    id        String   @id @default(uuid()) @map("_id")
+    xPos      Int
+    yPos      Int
+    data      Json
+
+    recipeId  String
+    recipe    Recipe   @relation(fields: [recipeId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Edge {
+    id        String   @id @default(uuid()) @map("_id")
+    sourceId  String
+    targetId  String
+    animated  Boolean
+
+    recipeId  String
+    recipe    Recipe   @relation(fields: [recipeId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
