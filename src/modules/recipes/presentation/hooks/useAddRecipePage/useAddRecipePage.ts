@@ -1,90 +1,22 @@
 import { useCallback, useMemo, useState } from "react";
 import type { Connection, Edge, Node } from "reactflow";
 import { addEdge, updateEdge, useEdgesState, useNodesState } from "reactflow";
-import { v4 as uuidv4 } from "@lukeed/uuid";
 import { useDisclosure } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-
 import type { AddCookingStepNodeFormFields } from "../../components/forms/AddCookingStepNodeForm/AddCookingStepNodeForm.types";
-import type {
-  NodeType,
-  EditableNodeType,
-} from "../../../domain/types/node-type.types";
 import type { CookingStepData } from "../../../domain/types/graph-node.types";
 import { useAddRecipe } from "../useAddRecipe/useAddRecipe";
-import { editableToLiveNodeType } from "../../../domain/types/node-type.types";
-
-const removeNodeFromList = (nodes: Node[], id: string) => {
-  return nodes.filter((node) => node.id !== id);
-};
-
-const removeNodeFromEdges = (edges: Edge[], id: string) => {
-  return edges.filter((edge) => edge.source !== id && edge.target !== id);
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const buildNewFlowNode = (type: NodeType, data: any): Node<CookingStepData> => {
-  const id = uuidv4();
-  return {
-    id,
-    type,
-    position: { x: 0, y: 0 },
-    data: {
-      ...data,
-      id,
-      type,
-      status: "NOT_STARTED",
-    },
-  };
-};
-
-const removeEdgeFromList = (edges: Edge[], id: string) => {
-  return edges.filter((edge) => edge.id !== id);
-};
-
-const editCookingStepNodeById = (
-  nodes: Node[],
-  id: string,
-  data: AddCookingStepNodeFormFields
-) => {
-  return nodes.map((node) => {
-    if (node.id === id) {
-      return { ...node, data: { ...node.data, ...data } };
-    }
-
-    return node;
-  });
-};
-
-const reactFlowNodeToDbNode = ({
-  id,
-  position,
-  data,
-}: Node<CookingStepData>) => {
-  return {
-    id,
-    xPos: position.x,
-    yPos: position.y,
-    data: {
-      ...data,
-      type: editableToLiveNodeType[data.type as EditableNodeType],
-    },
-  };
-};
-
-const reactFlowEdgeToDbEdge = ({
-  id,
-  source,
-  target,
-  animated = true,
-}: Edge) => {
-  return {
-    id,
-    sourceId: source,
-    targetId: target,
-    animated,
-  };
-};
+import {
+  parseRFEdgeToDBEdge,
+  parseRFNodeToDBNode,
+} from "../useGetRecipe/useGetRecipe.utils";
+import {
+  buildNewFlowNode,
+  editCookingStepNodeById,
+  removeEdgeFromList,
+  removeNodeFromEdges,
+  removeNodeFromList,
+} from "./useAddRecipePage.utils";
 
 export const useAddRecipePage = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<CookingStepData>([]);
@@ -170,8 +102,8 @@ export const useAddRecipePage = () => {
     }
     addRecipeMutation.mutate({
       name: "NUEVA_RECETA",
-      nodes: nodes.map(reactFlowNodeToDbNode),
-      edges: edges.map(reactFlowEdgeToDbEdge),
+      nodes: nodes.map(parseRFNodeToDBNode),
+      edges: edges.map(parseRFEdgeToDBEdge),
     });
   };
 

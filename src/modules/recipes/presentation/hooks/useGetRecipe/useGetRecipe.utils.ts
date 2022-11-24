@@ -1,4 +1,7 @@
 import type { Node as RFNode, Edge as RFEdge } from "reactflow";
+import type { CookingStepData } from "../../../domain/types/graph-node.types";
+import type { EditableNodeType } from "../../../domain/types/node-type.types";
+import { editableToLiveNodeType } from "../../../domain/types/node-type.types";
 
 type DbNode = {
   id: string;
@@ -39,3 +42,33 @@ export const parseDbEdgeToRFEdge = ({
   animated,
   type: "smoothstep",
 });
+
+export const parseRFNodeToDBNode = ({
+  id,
+  position,
+  data,
+}: RFNode<CookingStepData>) => {
+  return {
+    id,
+    xPos: position.x,
+    yPos: position.y,
+    data: {
+      ...data,
+      type: editableToLiveNodeType[data.type as EditableNodeType],
+    },
+  };
+};
+
+export const parseRFEdgeToDBEdge = ({
+  id,
+  source,
+  target,
+  animated = true,
+}: RFEdge) => {
+  return {
+    id,
+    sourceId: source,
+    targetId: target,
+    animated,
+  };
+};
