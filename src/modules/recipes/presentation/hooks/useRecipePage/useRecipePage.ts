@@ -9,6 +9,7 @@ import {
   completeStep,
   startStep,
 } from "../../../domain/utils/graph-steps-utils";
+import { isNullish } from "../../../../shared/infrastructure/utils/type-validations";
 
 type NodeProps = LiveCookingStepNodeProps | LiveIngredientNodeProps;
 
@@ -54,27 +55,10 @@ export const useRecipePage = ({ recipeId }: UseRecipePageProps) => {
   }, [isError]);
 
   useEffect(() => {
-    if (data) {
+    if (!isNullish(data)) {
       const { nodes, edges } = data;
-      // TODO: Extract to functions in other file (db -> graph) (graph -> db)
-      const parsedNodes = nodes.map(({ id, xPos, yPos, data }) => ({
-        id,
-        position: { x: xPos, y: yPos },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        type: (data as any).type,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: data as any,
-      }));
-      const parsedEdges = edges.map(({ id, sourceId, targetId, animated }) => ({
-        id,
-        source: sourceId,
-        target: targetId,
-        animated,
-        type: "smoothstep",
-      }));
-
-      setNodes(parsedNodes);
-      setEdges(parsedEdges);
+      setNodes(nodes);
+      setEdges(edges);
     }
   }, [data]);
 
