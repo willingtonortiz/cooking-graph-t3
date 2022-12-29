@@ -51,7 +51,14 @@ export const recipesRouter = router({
 
       const recipeId = uuidv4();
       const now = new Date();
-      const recipeData = { id: recipeId, name, createdAt: now, updatedAt: now };
+      // TODO: Add user id
+      const recipeData = {
+        id: recipeId,
+        name,
+        createdAt: now,
+        updatedAt: now,
+        userId: "",
+      };
       const nodesData = nodes.map((node) => ({
         ...node,
         recipeId,
