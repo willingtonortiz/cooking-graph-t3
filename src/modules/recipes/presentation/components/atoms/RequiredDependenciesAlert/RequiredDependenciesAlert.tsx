@@ -13,8 +13,8 @@ export const RequiredDependenciesAlert = ({ dependencies }: Props) => {
       <VStack alignItems={"flex-start"} spacing={0}>
         <Text fontWeight={"bold"}>Se deben completar los siguientes pasos</Text>
 
-        {dependencies.map((nodeTitle, index) => (
-          <Text key={index}>
+        {dependencies.map((nodeTitle) => (
+          <Text key={nodeTitle}>
             {"- "}
             {nodeTitle}
           </Text>

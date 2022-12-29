@@ -3,7 +3,7 @@ import produce from "immer";
 import toast from "react-hot-toast";
 import type { Edge, Node } from "reactflow";
 import type { LiveCookingStepNodeProps } from "../../presentation/components/nodes/LiveCookingStepNode/LiveCookingStepNode.types";
-import { RequiredDependenciesAlert } from "../../presentation/components/atomsRequiredDependenciesAlert/RequiredDependenciesAlert";
+import { RequiredDependenciesAlert } from "../../presentation/components/atoms/RequiredDependenciesAlert/RequiredDependenciesAlert";
 
 export const canStepStart = (
   nodes: Node<LiveCookingStepNodeProps>[],

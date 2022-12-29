@@ -1,10 +1,8 @@
 // TODO: Complete component
 
-import type { NodeProps } from "reactflow";
 import type { FC } from "react";
+import type { EditableIngredientNodeProps } from "./EditableIngredientNode.types";
 
-type Props = NodeProps<object>;
-
-export const EditableIngredientNode: FC<Props> = () => {
+export const EditableIngredientNode: FC<EditableIngredientNodeProps> = () => {
   return <div>EditableIngredientNode</div>;
 };

@@ -6,6 +6,7 @@ import { EditCookingStepNodeDrawer } from "../../modules/recipes/presentation/co
 import { useAddRecipePage } from "../../modules/recipes/presentation/hooks/useAddRecipePage/useAddRecipePage";
 import { nodeTypes } from "../../modules/recipes/presentation/components/nodes/node-types";
 import { edgeTypes } from "../../modules/recipes/presentation/components/nodes/edge-types";
+import { RecipeForm } from "../../modules/recipes/presentation/components/forms/RecipeForm/RecipeForm";
 
 const flowGrid: [number, number] = [25, 25];
 
@@ -18,6 +19,7 @@ const defaultEdgeOptions = {
 
 const AddRecipePage: NextPage = () => {
   const {
+    form,
     nodes,
     edges,
     onNodesChange,
@@ -33,25 +35,35 @@ const AddRecipePage: NextPage = () => {
   } = useAddRecipePage();
 
   return (
-    <Box w={"full"} h={"full"} position={"relative"}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onEdgeUpdate={onEdgeUpdate}
-        snapToGrid
-        snapGrid={flowGrid}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        defaultEdgeOptions={defaultEdgeOptions}
-        fitView
-      >
-        <Background />
+    <Box
+      w={"full"}
+      h={"full"}
+      position={"relative"}
+      display={"flex"}
+      flexFlow={"column nowrap"}
+    >
+      <RecipeForm form={form} />
 
-        <Controls />
-      </ReactFlow>
+      <Box flex={1}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onEdgeUpdate={onEdgeUpdate}
+          snapToGrid
+          snapGrid={flowGrid}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          defaultEdgeOptions={defaultEdgeOptions}
+          fitView
+        >
+          <Background />
+
+          <Controls position={"top-right"} />
+        </ReactFlow>
+      </Box>
 
       <VStack position={"absolute"} right={10} bottom={10} zIndex={10}>
         <Button onClick={addCookingStepDrawer.onOpen}>Agregar paso</Button>

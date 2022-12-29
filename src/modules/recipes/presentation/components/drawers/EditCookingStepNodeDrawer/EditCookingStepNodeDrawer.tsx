@@ -10,6 +10,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { AddCookingStepNodeForm } from "../../forms/AddCookingStepNodeForm/AddCookingStepNodeForm";
+import type { AddCookingStepNodeFormFields } from "../../forms/AddCookingStepNodeForm/AddCookingStepNodeForm.types";
 
 type Props = EditCookingStepNodeDrawerProps;
 
@@ -20,7 +21,7 @@ export const EditCookingStepNodeDrawer: FC<Props> = ({
   onEdit,
 }) => {
   const data = node?.data;
-  const onEditHandler = (values: unknown) => {
+  const onEditHandler = (values: AddCookingStepNodeFormFields) => {
     if (!node) {
       return;
     }

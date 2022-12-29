@@ -17,6 +17,7 @@ import {
   removeNodeFromEdges,
   removeNodeFromList,
 } from "./useAddRecipePage.utils";
+import { useRecipeForm } from "../useRecipeForm/useRecipeForm";
 
 export const useAddRecipePage = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<CookingStepData>([]);
@@ -26,6 +27,7 @@ export const useAddRecipePage = () => {
   >();
   const addCookingStepDrawer = useDisclosure();
   const editCookingStepDrawer = useDisclosure();
+  const form = useRecipeForm();
   const addRecipeMutation = useAddRecipe({
     onSuccess: () => {
       toast.success("Receta creada con éxito");
@@ -108,6 +110,7 @@ export const useAddRecipePage = () => {
   };
 
   return {
+    form,
     nodes: nodesWithMethods,
     edges: edgesWithMethods,
     onNodesChange,
