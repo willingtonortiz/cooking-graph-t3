@@ -14,6 +14,7 @@ export const TextInputControl = <
   label,
   helperText,
   placeholder,
+  type,
 }: TextInputControlProps<TFieldValues, TName>) => {
   const {
     field,
@@ -27,7 +28,7 @@ export const TextInputControl = <
       helperText={helperText}
       error={error}
     >
-      <Input {...field} placeholder={placeholder} />
+      <Input {...field} placeholder={placeholder} type={type} />
     </TextInputCommon>
   );
 };

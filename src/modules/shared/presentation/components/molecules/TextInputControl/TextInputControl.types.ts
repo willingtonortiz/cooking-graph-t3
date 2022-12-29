@@ -7,5 +7,6 @@ export type TextInputControlProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = Omit<TextInputCommonProps, "error" | "name"> &
   RHFControlProps<TFieldValues, TName> & {
+    type?: string;
     placeholder?: string;
   };
