@@ -10,11 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+    id        String   @id @default(uuid()) @map("_id")
+    email     String   @unique
+    password  String
+    firstName String?
+    lastName  String?
+
+    recipes   Recipe[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model Recipe {
     id        String   @id @default(uuid()) @map("_id")
     name      String
     nodes     Node[]
     edges     Edge[]
+
+    userId    String
+    user      User     @relation(fields: [userId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
