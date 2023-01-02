@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { serialize } from "cookie";
 import { publicProcedure, router } from "../../trpc";
 import {
   LoginRequestSchema,
@@ -40,6 +41,12 @@ export const authRouter = router({
       const jwtService = new JsonWebTokenJwtService();
       const token = jwtService.sign({ id: foundUser.id });
 
+      const serialized = serialize("token", token, {
+        httpOnly: true,
+        maxAge: 60 * 60,
+      });
+      ctx.res.setHeader("Set-Cookie", serialized);
+
       return { token };
     }),
 
@@ -50,8 +57,6 @@ export const authRouter = router({
       const { firstName, lastName, email, password } = input;
 
       const foundUser = await ctx.prisma.user.findUnique({ where: { email } });
-      console.log(input);
-
       if (foundUser) {
         throw new TRPCError({
           code: "BAD_REQUEST",
