@@ -1,34 +1,34 @@
-// noinspection JSUnusedLocalSymbols
-
 import { type inferAsyncReturnType } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import { prisma } from "../db/client";
+import type { JwtPayload } from "../modules/auth/domain/interfaces/jwt-payload";
+import { JsonWebTokenJwtService } from "../modules/auth/infrastructure/services/jsonwebtoken-jwt-service";
 
-/**
- * Replace this with an object if you want to pass things to createContextInner
- */
-type CreateContextOptions = Record<string, never>;
-
-/** Use this helper for:
- * - testing, so we dont have to mock Next.js' req/res
- * - trpc's `createSSGHelpers` where we don't have req/res
- * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
- **/
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createContextInner = async (opts: CreateContextOptions) => {
-  return {
-    prisma,
-  };
+type CreateContextOptions = {
+  req: NextApiRequest;
+  res: NextApiResponse;
 };
 
-/**
- * This is the actual context you'll use in your router
- * @link https://trpc.io/docs/context
- **/
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getUserFromRequest = (req: NextApiRequest): JwtPayload | null => {
+  const token = req.cookies.token;
+  if (!token) {
+    return null;
+  }
+
+  const jwtService = new JsonWebTokenJwtService();
+  return jwtService.verify(token);
+};
+
+export const createContextInner = async (opts: CreateContextOptions) => {
+  const user = getUserFromRequest(opts.req);
+
+  return { ...opts, prisma, user };
+};
+
 export const createContext = async (opts: CreateNextContextOptions) => {
-  return await createContextInner({});
+  return await createContextInner(opts);
 };
 
 export type Context = inferAsyncReturnType<typeof createContext>;
