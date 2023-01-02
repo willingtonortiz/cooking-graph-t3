@@ -13,6 +13,7 @@ specifiers:
   '@trpc/react-query': 10.0.0-rc.4
   '@trpc/server': 10.0.0-rc.4
   '@types/bcryptjs': ^2.4.2
+  '@types/cookie': ^0.5.1
   '@types/jsonwebtoken': ^9.0.0
   '@types/node': ^18.0.0
   '@types/react': ^18.0.14
@@ -20,6 +21,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.33.0
   '@typescript-eslint/parser': ^5.33.0
   bcryptjs: ^2.4.3
+  cookie: ^0.5.0
   eslint: ^8.26.0
   eslint-config-next: 13.0.2
   framer-motion: ^7.6.7
@@ -51,6 +53,7 @@ dependencies:
   '@trpc/react-query': 10.0.0-rc.4_q2ykz5ry7uzzhix6pf4rsmetbu
   '@trpc/server': 10.0.0-rc.4
   bcryptjs: 2.4.3
+  cookie: 0.5.0
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
   immer: 9.0.16
   jsonwebtoken: 9.0.0
@@ -66,6 +69,7 @@ dependencies:
 
 devDependencies:
   '@types/bcryptjs': 2.4.2
+  '@types/cookie': 0.5.1
   '@types/jsonwebtoken': 9.0.0
   '@types/node': 18.11.9
   '@types/react': 18.0.25
@@ -1763,6 +1767,10 @@ packages:
     resolution: {integrity: sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==}
     dev: true
 
+  /@types/cookie/0.5.1:
+    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
+    dev: true
+
   /@types/d3-array/3.0.3:
     resolution: {integrity: sha512-Reoy+pKnvsksN0lQUlcH6dOGjRZ/3WRwXR//m+/8lt1BXeI4xyaUZoqULNjyXXRuh0Mj4LNpkCvhUpQlY3X5xQ==}
     dev: false
@@ -2362,6 +2370,11 @@ packages:
 
   /convert-source-map/1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
+    dev: false
+
+  /cookie/0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
+    engines: {node: '>= 0.6'}
     dev: false
 
   /copy-anything/3.0.2:
