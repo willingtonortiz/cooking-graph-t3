@@ -10,6 +10,22 @@ import {
 } from "./recipesRouter.types";
 
 export const recipesRouter = router({
+  getAllByUserId: publicProcedure
+    .output(GetAllRecipesByUserIdOutput)
+    .query(async ({ ctx }) => {
+      const user = ctx.user;
+      if (!user) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "User not authenticated",
+        });
+      }
+
+      return await ctx.prisma.recipe.findMany({
+        where: { userId: user.id },
+      });
+    }),
+
   getById: publicProcedure
     .input(GetRecipeByIdInput)
     .output(GetRecipeByIdOutput)
