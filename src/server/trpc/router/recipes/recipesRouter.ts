@@ -1,18 +1,22 @@
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { v4 as uuidv4 } from "@lukeed/uuid";
-import { publicProcedure, router } from "../../trpc";
+import { router, publicProcedure } from "../../trpc";
+import {
+  AddRecipeInput,
+  AddRecipeOutput,
+  GetAllRecipesByUserIdOutput,
+  GetRecipeByIdInput,
+  GetRecipeByIdOutput,
+} from "./recipesRouter.types";
 
 export const recipesRouter = router({
   getById: publicProcedure
-    .input(z.string().uuid())
+    .input(GetRecipeByIdInput)
+    .output(GetRecipeByIdOutput)
     .query(async ({ input, ctx }) => {
       const result = await ctx.prisma.recipe.findUnique({
         where: { id: input },
-        include: {
-          nodes: true,
-          edges: true,
-        },
+        include: { nodes: true, edges: true },
       });
 
       if (!result) {
@@ -24,40 +28,29 @@ export const recipesRouter = router({
 
       return result;
     }),
+
   addOne: publicProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        nodes: z.array(
-          z.object({
-            id: z.string().uuid(),
-            xPos: z.number().int(),
-            yPos: z.number().int(),
-            data: z.any(),
-          })
-        ),
-        edges: z.array(
-          z.object({
-            id: z.string(),
-            animated: z.boolean(),
-            sourceId: z.string(),
-            targetId: z.string(),
-          })
-        ),
-      })
-    )
+    .input(AddRecipeInput)
+    .output(AddRecipeOutput)
     .mutation(async ({ input, ctx }) => {
       const { name, nodes, edges } = input;
 
+      const user = ctx.user;
+      if (!user) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "User not authenticated",
+        });
+      }
+
       const recipeId = uuidv4();
       const now = new Date();
-      // TODO: Add user id
       const recipeData = {
         id: recipeId,
         name,
         createdAt: now,
         updatedAt: now,
-        userId: "",
+        userId: user.id,
       };
       const nodesData = nodes.map((node) => ({
         ...node,
