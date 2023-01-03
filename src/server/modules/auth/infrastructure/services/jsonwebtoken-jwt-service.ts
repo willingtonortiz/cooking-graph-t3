@@ -5,7 +5,7 @@ import { sign as signToken, verify as verifyToken } from "jsonwebtoken";
 export class JsonWebTokenJwtService implements JwtService {
   sign(payload: JwtPayload): string {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return signToken(payload, process.env.JWT_SECRET!, { expiresIn: "5m" });
+    return signToken(payload, process.env.JWT_SECRET!, { expiresIn: "1h" });
   }
 
   verify(token: string): JwtPayload | null {
