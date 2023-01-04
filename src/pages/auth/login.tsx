@@ -1,16 +1,19 @@
-import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { Button, Container, VStack } from "@chakra-ui/react";
 import { useLoginForm } from "../../modules/auth/presentation/hooks/useLoginForm/useLoginForm";
 import { TextInputControl } from "../../modules/shared/presentation/components/molecules/TextInputControl/TextInputControl";
 import type { LoginFormFields } from "../../modules/auth/presentation/hooks/useLoginForm/useLoginForm.types";
 import { useLogin } from "../../modules/auth/presentation/hooks/useLogin/useLogin";
-import { useRouter } from "next/router";
+import type { NextPageWithLayout } from "../_app";
+import { trpc } from "../../utils/trpc";
 
-const LoginPage: NextPage = () => {
+const LoginPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { control, handleSubmit } = useLoginForm();
+  const utils = trpc.useContext();
   const loginMutation = useLogin({
     onSuccess: async () => {
+      await utils.user.me.invalidate();
       await router.push("/recipes");
     },
   });
