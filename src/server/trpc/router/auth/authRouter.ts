@@ -44,6 +44,7 @@ export const authRouter = router({
       const serialized = serialize("token", token, {
         httpOnly: true,
         maxAge: 60 * 60,
+        path: "/",
       });
       ctx.res.setHeader("Set-Cookie", serialized);
 
