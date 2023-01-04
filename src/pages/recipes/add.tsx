@@ -1,4 +1,3 @@
-import { type NextPage } from "next";
 import { Background, Controls, MarkerType, ReactFlow } from "reactflow";
 import { Box, Button, VStack } from "@chakra-ui/react";
 import { AddCookingStepNodeDrawer } from "../../modules/recipes/presentation/components/drawers/AddCookingStepNodeDrawer/AddCookingStepNodeDrawer";
@@ -7,6 +6,7 @@ import { useAddRecipePage } from "../../modules/recipes/presentation/hooks/useAd
 import { nodeTypes } from "../../modules/recipes/presentation/components/nodes/node-types";
 import { edgeTypes } from "../../modules/recipes/presentation/components/nodes/edge-types";
 import { RecipeForm } from "../../modules/recipes/presentation/components/forms/RecipeForm/RecipeForm";
+import type { NextPageWithLayout } from "../_app";
 
 const flowGrid: [number, number] = [25, 25];
 
@@ -17,7 +17,7 @@ const defaultEdgeOptions = {
   type: "smoothstep",
 };
 
-const AddRecipePage: NextPage = () => {
+const AddRecipePage: NextPageWithLayout = () => {
   const {
     form,
     nodes,
@@ -36,8 +36,7 @@ const AddRecipePage: NextPage = () => {
 
   return (
     <Box
-      w={"full"}
-      h={"full"}
+      flex={1}
       position={"relative"}
       display={"flex"}
       flexFlow={"column nowrap"}
