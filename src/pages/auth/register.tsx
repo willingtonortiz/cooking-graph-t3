@@ -1,12 +1,13 @@
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Button, Container, VStack } from "@chakra-ui/react";
 import { TextInputControl } from "../../modules/shared/presentation/components/molecules/TextInputControl/TextInputControl";
 import { useRegisterForm } from "../../modules/auth/presentation/hooks/useRegisterForm/useRegisterForm";
 import { useRegister } from "../../modules/auth/presentation/hooks/useRegister/useRegister";
 import type { RegisterFormFields } from "../../modules/auth/presentation/hooks/useRegisterForm/useRegisterForm.types";
+import { AuthLayout } from "../../modules/core/presentation/layouts/AuthLayout/AuthLayout";
+import type { NextPageWithLayout } from "../_app";
 
-const RegisterPage: NextPage = () => {
+const RegisterPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { control, handleSubmit } = useRegisterForm();
   const registerMutation = useRegister({
@@ -80,6 +81,10 @@ const RegisterPage: NextPage = () => {
       </VStack>
     </Container>
   );
+};
+
+RegisterPage.getLayout = function getLayout(page) {
+  return <AuthLayout>{page}</AuthLayout>;
 };
 
 export default RegisterPage;

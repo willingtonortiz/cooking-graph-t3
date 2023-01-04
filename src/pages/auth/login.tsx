@@ -6,6 +6,7 @@ import type { LoginFormFields } from "../../modules/auth/presentation/hooks/useL
 import { useLogin } from "../../modules/auth/presentation/hooks/useLogin/useLogin";
 import type { NextPageWithLayout } from "../_app";
 import { trpc } from "../../utils/trpc";
+import { AuthLayout } from "../../modules/core/presentation/layouts/AuthLayout/AuthLayout";
 
 const LoginPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -52,6 +53,10 @@ const LoginPage: NextPageWithLayout = () => {
       </VStack>
     </Container>
   );
+};
+
+LoginPage.getLayout = function getLayout(page) {
+  return <AuthLayout>{page}</AuthLayout>;
 };
 
 export default LoginPage;
